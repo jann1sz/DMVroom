@@ -30,6 +30,10 @@
     </style>
 </head>
 <body>
+    <div id="selectedStopInfo" style="padding: 10px; background-color: #f8f9fa; border-bottom: 2px solid #ccc;">
+        <strong>No stop selected</strong>
+    </div>
+    
     <div id="stopSelector">
         <label for="stopDropdown">Jump to Stop:</label>
         <select id="stopDropdown">
@@ -50,10 +54,13 @@
         }).addTo(map);
 
         const markerMap = {}; // store markers by stop name
+        let stopData = []; // <-- store the fetched stops globally
 
-        fetch('/api/stops')
+        fetch('/transport/stopList')
             .then(response => response.json())
             .then(data => {
+                stopData = data; // Save stops data globally
+
                 const dropdown = document.getElementById("stopDropdown");
 
                 data.forEach((stop, index) => {
@@ -63,7 +70,10 @@
                     let popupText = `<strong>${name}</strong>`;
                     if (stop.nextArrival) {
                         const t = stop.nextArrival;
-                        popupText += `<br/>Next: ${t.transportName} (${t.transportType})<br/>ETA: ${t.etaTime} mins<br/>Status: ${t.status}`;
+                        popupText += `<br/>Next: ${t.transportName} (${t.transportType})<br/>ETA: ${t.etaTime} mins<br/>Status: ${t.status}<br/>Current Capacity: ${t.capacity}<br/>`;
+                        popupText += `<br/><button onclick="selectStop('${t.transportName}')">Select</button>`;
+                    } else {
+                        popupText += `<br/><button disabled>No Transport Available</button>`;
                     }
 
                     const marker = L.marker([lat, lon]).addTo(map).bindPopup(popupText);
@@ -86,6 +96,47 @@
                     }
                 });
             });
+
+        // ---- selectStop function ----
+        function selectStop(transportName) {
+            fetch(`/transport/${transportName}/setPassenger`, {
+                method: 'POST'
+            })
+            .then(response => response.text())
+            .then(message => {
+                alert(message);
+                
+                // Find the stop that has this transportName
+                const selectedStop = stopData.find(stop => 
+                    stop.nextArrival && stop.nextArrival.transportName === transportName
+                );
+
+                if (selectedStop) {
+                    updateSelectedStopInfo(selectedStop);
+                }
+            })
+            .catch(error => {
+                console.error('Error selecting stop:', error);
+                alert("Failed to select stop!");
+            });
+        }
+
+        // ---- helper function to update the top div ----
+        function updateSelectedStopInfo(stop) {
+            const selectedStopInfoDiv = document.getElementById('selectedStopInfo');
+            let html = `<h2>Selected Stop: ${stop.stopName} </h2>`;
+
+            if (stop.nextArrival) {
+                const t = stop.nextArrival;
+                html += `<p>Next Transport: ${t.transportName} (${t.transportType}) | ETA: ${t.etaTime} minutes | Status: ${t.status} | Current Capacity: ${t.capacity}<br/>`;
+            } else {
+                html += `<p>No next arrival info available.</p>`;
+            }
+
+            selectedStopInfoDiv.innerHTML = html;
+        }
+
     </script>
+    
 </body>
 </html>

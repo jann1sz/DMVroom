@@ -18,7 +18,7 @@ import com.example.demo.TransportComponent.model.Transport;
 import org.springframework.http.*;
 
 @Service
-public class WmataService {
+public class ApiMicroservice {
 
     @Value("${wmata.api.key}")
     private String apiKey;
