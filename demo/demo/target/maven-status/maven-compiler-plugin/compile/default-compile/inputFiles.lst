@@ -4,6 +4,7 @@ C:\Users\Jacks\Desktop\443 Folder\DMVroom - Main\DMVroom\demo\demo\src\main\java
 C:\Users\Jacks\Desktop\443 Folder\DMVroom - Main\DMVroom\demo\demo\src\main\java\com\example\demo\TransportComponent\model\Transport.java
 C:\Users\Jacks\Desktop\443 Folder\DMVroom - Main\DMVroom\demo\demo\src\main\java\com\example\demo\TransportComponent\service\ApiMicroservice.java
 C:\Users\Jacks\Desktop\443 Folder\DMVroom - Main\DMVroom\demo\demo\src\main\java\com\example\demo\TransportComponent\view\TransportView.java
-C:\Users\Jacks\Desktop\443 Folder\DMVroom - Main\DMVroom\demo\demo\src\main\java\com\example\demo\UserComponent\controller\UserController.java
-C:\Users\Jacks\Desktop\443 Folder\DMVroom - Main\DMVroom\demo\demo\src\main\java\com\example\demo\UserComponent\model\User.java
-C:\Users\Jacks\Desktop\443 Folder\DMVroom - Main\DMVroom\demo\demo\src\main\java\com\example\demo\UserComponent\service\UserService.java
+C:\Users\Jacks\Desktop\443 Folder\DMVroom - Main\DMVroom\demo\demo\src\main\java\com\example\demo\UserComponent\controller\LoginController.java
+C:\Users\Jacks\Desktop\443 Folder\DMVroom - Main\DMVroom\demo\demo\src\main\java\com\example\demo\UserComponent\controller\PreferencesController.java
+C:\Users\Jacks\Desktop\443 Folder\DMVroom - Main\DMVroom\demo\demo\src\main\java\com\example\demo\UserComponent\model\Preferences.java
+C:\Users\Jacks\Desktop\443 Folder\DMVroom - Main\DMVroom\demo\demo\src\main\java\com\example\demo\UserComponent\service\PreferencesService.java

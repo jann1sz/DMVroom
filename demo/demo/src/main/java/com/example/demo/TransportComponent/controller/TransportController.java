@@ -56,7 +56,7 @@ public class TransportController {
         }
 
         //Calls to the User API to give the Transport Component the users info to be saved as a passenger.
-        String userApiUrl = "http://localhost:8080/api/user/current";
+        String userApiUrl = "http://localhost:8080/user/info";
         @SuppressWarnings("unchecked")
         Map<String, Object> userMap = restTemplate.getForObject(userApiUrl, Map.class);
 

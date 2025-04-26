@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 @RequestMapping("/transport")
 public class TransportView {
     @GetMapping("/view")
-    public String showMapPage() {
+    public String showTransport() {
         return "transport/map";
     }
 }

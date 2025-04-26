@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html xmlns:th = "http://www.thymeleaf.org" lang = "en">
+<head>
+
+    <title>User Preferences</title>
+    <style>
+
+        body{
+            background-color: #a2cddb;
+            font-family:Arial, Helvetica, sans-serif;
+            margin: 0;
+        }
+
+        h1{
+            color: rgb(66, 110, 181);
+        }
+        h2 {
+            color: rgb(66, 110, 181);
+        }
+        .preferences-container {
+            background-color: #ffffff;
+            border: 1px solid #ccc;
+            padding: 20px;
+            width: 500px;
+            margin: 0 auto;
+        }
+
+        .preference-item {
+            margin-bottom: 25px;
+            padding-right: 60px;
+        }
+
+        .edit-button {
+            width: 100%;
+            padding: 10px;
+            background-color: #5885d4;
+            color: white;
+            border: none;
+            cursor: pointer;
+            font-size: 16px;
+        }
+
+        .edit-form {
+            display: none;
+            margin-top: 10px;
+        }
+
+        .show-edit-form {
+            display: block;
+        }
+
+        .form-input {
+            margin: 5px 0;
+            padding: 5px;
+            width: 80%;
+        }
+    </style>
+</head>
+<body>
+
+    <h1>Hello, <span th:text="${username}"></span>!</h1>
+    <h2>Welcome to your preferences page.</h2>
+    <br><br>
+    <div class = "preferences-container">
+        <form th:action="@{/preferences/update}" method="post">
+            <!-- Mode of Transportation changes -->
+            <div class = "preference-item">
+                <strong>Mode of Transportation:</strong> <span th:text = "${preferences.modeOfTransportation}"></span>
+                <span th:text="${preferences.modeOfTransportation}"></span>
+                <div class = "edit-form" id = "modeOfTransportation">
+                    <input type = "text" class = "form-input" th:value = "${preferences.modeOfTransportation}" id = "modeOfTransportationInput"/>
+
+                </div>
+            </div>
+            <br>
+
+            <!-- Level of Crowdedness changes-->
+            <div class = "preference-item">
+                <strong> Preferred Crowdedness: </strong>
+                <span th:text = "${preferences.preferredCrowdedness}"></span>
+                <div class = "edit-form" id = "preferredCrowdedness">
+                    <input type = "text" class = "form-input" th:value = "${preferences.preferredCrowdedness}" id = "preferredCrowdednessInput"/>
+                </div>
+            </div>
+            <br>
+
+            <!-- Favorite stops changes -->
+            <div class = "preference-item">
+                <strong>Favorite Stops:</strong>
+                <span th:text = "${preferences.favoriteStops}"></span>
+                <div class = "edit-form" id = "favoriteStops">
+                    <input type = "text" class = "form-input" th:value = "${preferences.favoriteStops}" id = "favoriteStopsInput"/>
+
+                </div>
+            </div>
+
+            <br><br><br>
+            <button type = "button" class = "edit-button" onclick="toggleEditForm()">Edit</button>
+            <button type="submit" class="edit-button">Save Preferences</button>
+        </form>
+    </div>
+
+    <script>
+        <!--Looping statenent to edit the preferences -->
+        function toggleEditForm() {
+            const edit = document.querySelectorAll('.edit-form');
+            edit.forEach(form => {
+                form.classList.toggle('show-edit-form');
+            })
+        }
+    </script>
+</body>
+</html>
