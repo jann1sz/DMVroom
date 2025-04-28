@@ -74,17 +74,4 @@ public class TransportController {
             }
         }
     }
-
-    //Gets a unique Stop so long as the user has a Stops stopName, for use by User Components favorite stops.
-    @ResponseBody
-    @GetMapping("/stop/{stopName}")
-    public Stop getStopByName(String stopName) {
-        for (Stop stop : currentStops) {
-            if (stop.getStopName().equalsIgnoreCase(stopName)) {
-                return stop;
-            }
-        }
-        throw new RuntimeException("Stop not found: " + stopName);
-    }
-
 }
