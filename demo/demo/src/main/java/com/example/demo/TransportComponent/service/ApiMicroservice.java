@@ -4,18 +4,22 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Random;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpMethod;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
 import com.example.demo.TransportComponent.model.Stop;
 import com.example.demo.TransportComponent.model.Transport;
-
-import org.springframework.http.*;
 
 @Service
 public class ApiMicroservice {
@@ -59,7 +63,8 @@ public class ApiMicroservice {
                     t.setStatus("On-Time");
                 }
     
-                t.setCapacity(0); // Default value
+                Random random = new Random();
+                t.setCapacity(random.nextInt(10) + 1);
                 t.setEtaTime(0);  // Placeholder
     
                 transports.add(t);
@@ -98,12 +103,13 @@ public class ApiMicroservice {
                 } else {
                     t.setStatus("On-Time");
                 }
-        
-                // Optional: Map car count as capacity (or store separately)
+
                 t.setCapacity(train.optInt("CarCount", 0));
-        
-                // Still a placeholder
+
                 t.setEtaTime(0);
+                //Sets capacity to be random since we wont have multiple users in testing.
+                Random random = new Random();
+                t.setCapacity(random.nextInt(10) + 1);
         
                 transports.add(t);
             }
@@ -172,8 +178,6 @@ public class ApiMicroservice {
                                 }
                             }
                         }
-                        // Optional: avoid getting rate-limited
-                        Thread.sleep(200);
                     } catch (Exception ex) {
                         System.err.println("Prediction failed for StopID " + stopId + ": " + ex.getMessage());
                     }

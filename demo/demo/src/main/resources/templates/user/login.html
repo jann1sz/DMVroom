@@ -55,7 +55,7 @@
     <div class= "container">
         <h2>DMVroom Login</h2>
 
-        <form action = "#" th:action="@{/login}" th:object= "${user}" method = "post">
+        <form th:action="@{/login}" method = "post">
             <div class = "input-field">
                 <input type = "text" name = "username" placeholder= "Enter username" required />
 

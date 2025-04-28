@@ -92,7 +92,6 @@
                     if (selectedName && markerMap[selectedName]) {
                         const marker = markerMap[selectedName];
                         map.flyTo(marker.getLatLng(), 15);
-                        marker.openPopup();
                     }
                 });
             });
@@ -104,8 +103,7 @@
             })
             .then(response => response.text())
             .then(message => {
-                alert(message);
-                
+                console.log(message); 
                 // Find the stop that has this transportName
                 const selectedStop = stopData.find(stop => 
                     stop.nextArrival && stop.nextArrival.transportName === transportName

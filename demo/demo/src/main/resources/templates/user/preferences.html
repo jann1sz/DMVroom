@@ -54,46 +54,103 @@
             padding: 5px;
             width: 80%;
         }
+
+        .logout-container {
+            position: fixed;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 1000;
+        }
+
+        .logout-button {
+            width: 100%;
+            padding: 10px;
+            background-color: #5885d4;
+            color: white;
+            border: none;
+            cursor: pointer;
+            font-size: 16px;
+        }
+
+        .logout-button:hover {
+            background-color: #e19e9e;
+        }
     </style>
 </head>
 <body>
-
+    <div style="position: absolute; top: 10px; right: 10px;">
+        <a href="/transport/view" style="padding: 10px 15px; background-color: #5885d4; color: white; text-decoration: none; border-radius: 8px;">View Map</a>
+    </div>
     <h1>Hello, <span th:text="${username}"></span>!</h1>
     <h2>Welcome to your preferences page.</h2>
     <br><br>
     <div class = "preferences-container">
-        <form th:action="@{/preferences/update}" method="post">
-            <!-- Mode of Transportation changes -->
-            <div class = "preference-item">
-                <strong>Mode of Transportation:</strong> <span th:text = "${preferences.modeOfTransportation}"></span>
-                <span th:text="${preferences.modeOfTransportation}"></span>
-                <div class = "edit-form" id = "modeOfTransportation">
-                    <input type = "text" class = "form-input" th:value = "${preferences.modeOfTransportation}" id = "modeOfTransportationInput"/>
+        <form th:action="@{'/preferences/' + ${username}}" method="post">
+           <!-- Mode of Transportation -->
+            <div class="preference-item">
+                <strong>Mode of Transportation:</strong>
+                <span th:text="${preferences.modeOfTransportation}">None Selected</span>
 
+                <div class="edit-form" id="modeOfTransportation">
+                    <label>
+                        <input type="radio" name="modeOfTransportation" value="Metro"
+                            th:checked="${preferences.modeOfTransportation == 'Metro'}" />
+                        Metro
+                    </label>
+                    <label>
+                        <input type="radio" name="modeOfTransportation" value="Bus"
+                            th:checked="${preferences.modeOfTransportation == 'Bus'}" />
+                        Bus
+                    </label>
                 </div>
             </div>
+
             <br>
 
-            <!-- Level of Crowdedness changes-->
-            <div class = "preference-item">
-                <strong> Preferred Crowdedness: </strong>
-                <span th:text = "${preferences.preferredCrowdedness}"></span>
-                <div class = "edit-form" id = "preferredCrowdedness">
-                    <input type = "text" class = "form-input" th:value = "${preferences.preferredCrowdedness}" id = "preferredCrowdednessInput"/>
+            <!-- Preferred Crowdedness -->
+            <div class="preference-item">
+                <strong>Preferred Crowdedness:</strong>
+                <span th:text="${preferences.preferredCrowdedness}">None Selected</span>
+
+                <div class="edit-form" id="preferredCrowdedness">
+                    <div style="display: flex; flex-wrap: wrap; gap: 5px;">
+                        <button type="button" 
+                                th:each="i : ${#numbers.sequence(1,10)}"
+                                th:text="${i}"
+                                th:attr="data-value=${i}"
+                                onclick="selectCrowdedness(this)"
+                                style="padding:5px 10px; background-color: #e0e0e0; border: 1px solid #ccc; cursor:pointer;">
+                        </button>
+                    </div>
+                    <!-- Hidden input where the button click will store the selected value -->
+                    <input type="hidden" name="preferredCrowdedness" id="preferredCrowdednessInput" 
+                        th:value="${preferences.preferredCrowdedness}" />
                 </div>
             </div>
+
+
             <br>
 
-            <!-- Favorite stops changes -->
-            <div class = "preference-item">
+            <!-- Favorite Stops -->
+            <div class="preference-item">
                 <strong>Favorite Stops:</strong>
-                <span th:text = "${preferences.favoriteStops}"></span>
-                <div class = "edit-form" id = "favoriteStops">
-                    <input type = "text" class = "form-input" th:value = "${preferences.favoriteStops}" id = "favoriteStopsInput"/>
+                <!-- Display existing favorite stops nicely -->
+                <ul>
+                    <li th:each="stopName : ${preferences.favoriteStops}" th:text="${stopName}">Stop Name</li>
+                </ul>
 
+                <!-- Dropdown to edit favorite stops -->
+                <div class="edit-form" id="favoriteStops">
+                    <select name="favoriteStops" multiple class="form-input">
+                        <option th:each="stop : ${stopList}"
+                                th:value="${stop.stopName}"
+                                th:text="${stop.stopName}"
+                                th:selected="${preferences.favoriteStops != null and preferences.favoriteStops.contains(stop.stopName)}">
+                        </option>
+                    </select>   
                 </div>
             </div>
-
             <br><br><br>
             <button type = "button" class = "edit-button" onclick="toggleEditForm()">Edit</button>
             <button type="submit" class="edit-button">Save Preferences</button>
@@ -101,13 +158,36 @@
     </div>
 
     <script>
-        <!--Looping statenent to edit the preferences -->
         function toggleEditForm() {
             const edit = document.querySelectorAll('.edit-form');
             edit.forEach(form => {
                 form.classList.toggle('show-edit-form');
             })
         }
+    
+        function selectCrowdedness(button) {
+            // Remove highlight from all buttons first
+            document.querySelectorAll('[data-value]').forEach(btn => {
+                btn.style.backgroundColor = '#e0e0e0';
+            });
+    
+            // Highlight clicked button
+            button.style.backgroundColor = '#5885d4';
+            button.style.color = 'white';
+    
+            // Set value into hidden input
+            const value = button.getAttribute('data-value');
+            document.getElementById('preferredCrowdednessInput').value = value;
+        }
     </script>
+    
+
+    <div class = "logout-container">
+        <form th:action ="@{/logout}" method = "post">
+            <button type = "submit" class = "logout-button">Logout</button>
+        </form>
+    </div>
+
+
 </body>
 </html>

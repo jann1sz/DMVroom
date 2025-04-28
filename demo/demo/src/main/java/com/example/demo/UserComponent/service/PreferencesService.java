@@ -1,9 +1,13 @@
 package com.example.demo.UserComponent.service;
 
-import com.example.demo.UserComponent.model.Preferences;
-import org.springframework.stereotype.Service;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
+
+import org.springframework.stereotype.Service;
+
+import com.example.demo.UserComponent.model.Preferences;
 
 @Service
 public class PreferencesService {
@@ -22,7 +26,26 @@ public class PreferencesService {
     /**
      * Updates the preference set at the key [username]
      */
-    public void updatePreferences(String username, Preferences updatedPreferences){
-        preferencesStorage.put(username, updatedPreferences);
+    public void updatePreferences(String username, Preferences updatedPreferences) {
+        Preferences existingPreferences = getOrCreatePreferences(username);
+    
+        if (updatedPreferences.getModeOfTransportation() != null) {
+            existingPreferences.setModeOfTransportation(updatedPreferences.getModeOfTransportation());
+        }
+    
+        if (updatedPreferences.getPreferredCrowdedness() != null) {
+            existingPreferences.setPreferredCrowdedness(updatedPreferences.getPreferredCrowdedness());
+        }
+    
+        if (updatedPreferences.getFavoriteStops() != null && !updatedPreferences.getFavoriteStops().isEmpty()) {
+            existingPreferences.setFavoriteStops(updatedPreferences.getFavoriteStops());
+        }
+    
+        preferencesStorage.put(username, existingPreferences);
+    }
+    
+
+    public List<Preferences> getAllUsers() {
+        return new ArrayList<>(preferencesStorage.values());
     }
 }

@@ -2,7 +2,6 @@ package com.example.demo.TransportComponent.model;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
 public class Transport {
     private String transportName;
@@ -11,7 +10,7 @@ public class Transport {
     private int etaTime;
     private int delayTime;
     private int capacity;
-    private List<Map<String, Object>> passengers = new ArrayList<>();
+    private List<String> passengers = new ArrayList<>();
 
     // Getters and Setters
     public String getTransportName() { return transportName; }
@@ -37,8 +36,8 @@ public class Transport {
     public int getCapacity() { return capacity; }
     public void setCapacity(int capacity) { this.capacity = capacity; }
 
-    public List<Map<String, Object>> getPassengers() { return passengers; }
-    public void setPassenger(Map<String, Object> passengerInfo) {
+    public List<String> getPassengers() { return passengers; }
+    public void setPassenger(String passengerInfo) {
         passengers.add(passengerInfo);
     }
 }
